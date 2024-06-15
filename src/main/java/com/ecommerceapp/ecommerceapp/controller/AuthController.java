@@ -20,19 +20,9 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "*")
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        Optional<User> existingUser = userService.findByUsername(user.getUsername());
-        if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
-            return ResponseEntity.ok("Login successful");
-        } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
-    }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/register")
+    @PostMapping("/login")
     public ResponseEntity<User> register(@RequestBody User user) {
         // Assuming UserService has a method to save user data
         User newUser = userService.save(user);
