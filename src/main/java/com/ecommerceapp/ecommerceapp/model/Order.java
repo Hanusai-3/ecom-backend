@@ -18,7 +18,7 @@ public class Order {
     public void setStatus(String orderPlaced) {
     }
 
-    // Add more fields as needed (e.g., userId, timestamps)
+
 
 }
 
