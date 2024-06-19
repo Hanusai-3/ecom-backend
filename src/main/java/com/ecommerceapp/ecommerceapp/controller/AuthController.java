@@ -1,6 +1,7 @@
 package com.ecommerceapp.ecommerceapp.controller;
 
 import com.ecommerceapp.ecommerceapp.model.User;
+import com.ecommerceapp.ecommerceapp.repository.UserRepository;
 import com.ecommerceapp.ecommerceapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,24 @@ public class AuthController {
 
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
 
     @CrossOrigin(origins = "*")
     @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user) {
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
         // Assuming UserService has a method to save user data
         User newUser = userService.save(user);
@@ -30,4 +44,3 @@ public class AuthController {
     }
 
 }
-
